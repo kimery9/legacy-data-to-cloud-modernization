@@ -21,7 +21,7 @@ This pipeline performs:
 
 # 🧱 1. Legacy Source System — SQLite (OLTP)
 
-The project begins with the **Chinook** SQLite database, representing a typical legacy operational system:
+The project begins with the **Chinook** SQLite database (https://github.com/lerocha/chinook-database), representing a typical legacy operational system:
 
 - Highly normalized schema  
 - Not optimized for analytics  
