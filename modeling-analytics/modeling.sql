@@ -94,7 +94,7 @@ SELECT
 FROM FACT_USER_EVENTS
 GROUP BY user_id;
 
-
+--create date dimension with date spine for completeness of time analysis
 CREATE OR REPLACE TABLE DIM_DATE AS
 WITH bounds AS (
     SELECT 
@@ -105,7 +105,7 @@ WITH bounds AS (
 nums AS (
     SELECT 
         ROW_NUMBER() OVER (ORDER BY SEQ4()) - 1 AS n
-    FROM TABLE(GENERATOR(ROWCOUNT => 50000))  -- large enough range
+    FROM TABLE(GENERATOR(ROWCOUNT => 50000))  
 ),
 date_spine AS (
     SELECT 

@@ -26,7 +26,7 @@ artist = pd.read_sql("SELECT * FROM Artist", conn)
 
 conn.close()
 
-# --- Join into a user_events frame ---
+# --- Join into a user_events frame into denorm view ---
 df = (
     invoice_line
     .merge(invoice, on="InvoiceId", how="left", suffixes=("", "_invoice"))
@@ -48,6 +48,7 @@ if not price_cols:
 base_price_col = price_cols[0]
 
 # --- Clean & derive fields ---
+# quantity: fill missing with 1
 df["quantity"] = df.get("quantity", 1).fillna(1)
 
 # invoice date → timestamp
@@ -67,7 +68,7 @@ df["total_amount"] = df["quantity"] * df[base_price_col].astype(float)
 user_spend = df.groupby("customerid")["total_amount"].transform("sum")
 df["is_trial_user"] = user_spend < 5  # fake business rule
 
-# --- Select cleaned columns for warehouse ---
+# --- Select cleaned columns for warehouse and analytical schema ---
 user_events = df[
     [
         "invoicelineid",       # event_id
